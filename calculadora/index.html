@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora Estadística · DLPESS UTN</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',sans-serif;background:#f0f4f8;color:#111827;min-height:100vh;}
+nav{background:#1a3a6b;padding:0 40px;display:flex;align-items:center;justify-content:space-between;height:62px;}
+.nav-logo{display:flex;align-items:center;gap:12px;color:#fff;font-weight:700;font-size:1rem;}
+.nav-links{display:flex;gap:6px;}
+.nav-links a{color:#b5d4f4;font-size:0.85rem;padding:6px 14px;border-radius:20px;text-decoration:none;transition:.2s;}
+.nav-links a:hover,.nav-links a.active{background:rgba(255,255,255,0.15);color:#fff;}
+.hero{background:#1a3a6b;padding:48px 40px 0;display:flex;align-items:flex-end;gap:40px;overflow:hidden;}
+.hero-text{flex:1;padding-bottom:40px;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);padding:6px 16px;border-radius:999px;font-size:0.78rem;color:#b5d4f4;font-weight:700;letter-spacing:.08em;margin-bottom:18px;}
+.hero-text h1{font-size:2.8rem;font-weight:800;color:#fff;line-height:1.1;letter-spacing:-1px;margin-bottom:14px;}
+.hero-text p{color:#b5d4f4;font-size:1rem;line-height:1.8;max-width:560px;}
+.hero-fig{width:360px;flex-shrink:0;}
+.main{padding:36px 40px;max-width:1400px;margin:auto;display:grid;grid-template-columns:380px 1fr;gap:28px;align-items:start;}
+.card{background:#fff;border-radius:20px;padding:28px;border:1px solid #e2e8f0;box-shadow:0 4px 24px rgba(0,0,0,0.05);}
+.card-title{font-size:1rem;font-weight:700;color:#1a3a6b;margin-bottom:5px;display:flex;align-items:center;gap:8px;}
+.card-sub{font-size:0.83rem;color:#6b7280;margin-bottom:18px;line-height:1.6;}
+textarea{width:100%;min-height:150px;border:1.5px solid #dbeafe;border-radius:12px;padding:14px;font-size:0.92rem;font-family:inherit;resize:vertical;outline:none;background:#f8faff;color:#1e293b;transition:.2s;}
+textarea:focus{border-color:#2a5298;box-shadow:0 0 0 4px rgba(42,82,152,0.08);}
+.chart-tabs{display:flex;gap:7px;margin:14px 0;flex-wrap:wrap;}
+.ctab{padding:6px 13px;border-radius:20px;border:1.5px solid #dbeafe;background:#f0f7ff;color:#2a5298;font-size:0.8rem;font-weight:600;cursor:pointer;transition:.2s;}
+.ctab.active,.ctab:hover{background:#1a3a6b;color:#fff;border-color:#1a3a6b;}
+.btns{display:flex;gap:10px;margin-top:16px;}
+.btn-p{flex:1;background:#1a3a6b;color:#fff;border:none;border-radius:12px;padding:13px;font-size:0.92rem;font-weight:700;cursor:pointer;transition:.2s;}
+.btn-p:hover{background:#2a5298;transform:translateY(-2px);}
+.btn-s{flex:1;background:#e8f0fb;color:#1a3a6b;border:none;border-radius:12px;padding:13px;font-size:0.92rem;font-weight:700;cursor:pointer;transition:.2s;}
+.btn-s:hover{background:#dbeafe;transform:translateY(-2px);}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px;}
+.stat{background:#f8faff;border:1.5px solid #dbeafe;border-radius:12px;padding:14px;}
+.stat-label{font-size:0.72rem;color:#6b7280;text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px;}
+.stat-value{font-size:1.7rem;font-weight:800;color:#1a3a6b;}
+.stat-note{font-size:0.72rem;color:#94a3b8;margin-top:2px;}
+.stat.hl{background:#1a3a6b;border-color:#1a3a6b;}
+.stat.hl .stat-label{color:#b5d4f4;}
+.stat.hl .stat-value{color:#fff;}
+.stat.hl .stat-note{color:#93c5fd;}
+.cv-wrap{margin-top:7px;height:5px;background:#e0eaf7;border-radius:3px;overflow:hidden;}
+.cv-fill{height:100%;border-radius:3px;transition:width .6s;}
+.interp{background:#f0f7ff;border:1.5px solid #bfdbfe;border-radius:12px;padding:14px;margin-top:14px;display:none;}
+.interp-t{font-size:0.72rem;font-weight:700;color:#1a3a6b;text-transform:uppercase;letter-spacing:.08em;margin-bottom:9px;}
+.iitem{display:flex;gap:8px;font-size:0.83rem;color:#374151;margin-bottom:6px;line-height:1.5;}
+.idot{width:6px;height:6px;border-radius:50%;background:#4a90d9;margin-top:5px;flex-shrink:0;}
+.chart-area{background:#fff;border-radius:20px;border:1px solid #e2e8f0;box-shadow:0 4px 24px rgba(0,0,0,0.05);overflow:hidden;}
+.chart-top{padding:22px 28px 0;display:flex;align-items:flex-start;justify-content:space-between;}
+.ct-h2{font-size:1.15rem;font-weight:800;color:#1a3a6b;}
+.ct-p{font-size:0.82rem;color:#6b7280;margin-top:2px;}
+.gg-badge{background:#f1f5f9;border:1px solid #e2e8f0;border-radius:8px;padding:4px 10px;font-size:0.72rem;color:#64748b;font-weight:700;letter-spacing:.04em;}
+.canvas-wrap{padding:18px 28px 28px;}
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:70px 20px;color:#94a3b8;text-align:center;gap:14px;}
+.empty p{font-size:0.88rem;line-height:1.7;}
+canvas{width:100%!important;height:500px!important;}
+@media(max-width:1000px){.main{grid-template-columns:1fr;}.hero{flex-direction:column;}.hero-fig{display:none;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Dr. Mario Leguízamo</div>
+  <div class="nav-links"></div>
+</nav>
+
+<div class="hero">
+  <div class="hero-text">
+    <div class="hero-badge">OBSERVAR · ANALIZAR · TRANSFORMAR</div>
+    <h1>Calculadora<br>Estadística Visual</h1>
+    <p>Ingresa tus datos y obtén estadísticos descriptivos completos.</p>
+  </div>
+  <div class="hero-fig">
+    <svg width="360" height="210" viewBox="0 0 360 210" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="52" cy="28" r="13" stroke="white" stroke-width="2.2" fill="none"/>
+      <line x1="52" y1="41" x2="52" y2="80" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
+      <line x1="52" y1="56" x2="37" y2="67" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
+      <line x1="52" y1="56" x2="67" y2="67" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
+      <line x1="52" y1="80" x2="42" y2="98" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
+      <line x1="52" y1="80" x2="62" y2="98" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
+      <circle cx="36" cy="50" r="9" stroke="#4a90d9" stroke-width="2" fill="none"/>
+      <line x1="42" y1="57" x2="48" y2="63" stroke="#4a90d9" stroke-width="2" stroke-linecap="round"/>
+      <text x="26" y="36" fill="#4a90d9" font-size="13" font-family="Inter" font-weight="700">?</text>
+      <text x="52" y="118" text-anchor="middle" fill="#b5d4f4" font-size="9" font-family="Inter" font-weight="700" letter-spacing="1">OBSERVAR</text>
+      <defs><marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M1 1L9 5L1 9" fill="none" stroke="#4a90d9" stroke-width="1.8"/></marker></defs>
+      <line x1="95" y1="58" x2="128" y2="58" stroke="#4a90d9" stroke-width="2" stroke-linecap="round" marker-end="url(#a)"/>
+      <circle cx="178" cy="28" r="13" stroke="white" stroke-width="2.2" fill="none"/>
+      <line x1="178" y1="41" x2="178" y2="80" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
+      <line x1="178" y1="56" x2="163" y2="67" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
+      <line x1="178" y1="56" x2="193" y2="67" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
+      <line x1="178" y1="80" x2="168" y2="98" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
+      <line x1="178" y1="80" x2="188" y2="98" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
+      <rect x="162" y="48" width="6" height="15" rx="1.5" fill="#4a90d9"/>
+      <rect x="170" y="40" width="6" height="23" rx="1.5" fill="white" opacity=".65"/>
+      <rect x="178" y="44" width="6" height="19" rx="1.5" fill="#4a90d9"/>
+      <text x="178" y="118" text-anchor="middle" fill="#b5d4f4" font-size="9" font-family="Inter" font-weight="700" letter-spacing="1">ANALIZAR</text>
+      <line x1="220" y1="58" x2="254" y2="58" stroke="#4a90d9" stroke-width="2" stroke-linecap="round" marker-end="url(#a)"/>
+      <circle cx="305" cy="28" r="13" stroke="white" stroke-width="2.2" fill="none"/>
+      <line x1="305" y1="41" x2="305" y2="80" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
+      <line x1="305" y1="56" x2="290" y2="67" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
+      <line x1="305" y1="56" x2="320" y2="67" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
+      <line x1="305" y1="80" x2="295" y2="98" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
+      <line x1="305" y1="80" x2="315" y2="98" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
+      <circle cx="300" cy="28" r="4" stroke="white" stroke-width="1.4" fill="none"/>
+      <circle cx="310" cy="28" r="4" stroke="white" stroke-width="1.4" fill="none"/>
+      <line x1="296" y1="28" x2="292" y2="28" stroke="white" stroke-width="1.4"/>
+      <line x1="318" y1="13" x2="318" y2="38" stroke="#4a90d9" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M318 13 L338 19 L318 28 Z" fill="#4a90d9"/>
+      <text x="305" y="118" text-anchor="middle" fill="#b5d4f4" font-size="9" font-family="Inter" font-weight="700" letter-spacing="1">TRANSFORMAR</text>
+      <rect x="14" y="138" width="330" height="52" rx="11" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+      <rect x="32" y="152" width="5" height="16" rx="1" fill="#4a90d9"/>
+      <rect x="39" y="146" width="5" height="22" rx="1" fill="white" opacity=".55"/>
+      <rect x="46" y="149" width="5" height="19" rx="1" fill="#4a90d9"/>
+      <text x="60" y="165" fill="#b5d4f4" font-size="8.5" font-family="Inter" font-weight="600">MEDIA</text>
+      <circle cx="105" cy="159" r="7" stroke="white" stroke-width="1.4" fill="none"/>
+      <line x1="110" y1="164" x2="115" y2="169" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+      <text x="120" y="165" fill="#b5d4f4" font-size="8.5" font-family="Inter" font-weight="600">ANALIZAR</text>
+      <path d="M172 168 Q180 150 190 160 Q200 170 210 152" stroke="#4a90d9" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+      <text x="215" y="165" fill="#b5d4f4" font-size="8.5" font-family="Inter" font-weight="600">GRAFICAR</text>
+      <line x1="275" y1="151" x2="275" y2="162" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+      <path d="M270 160 L275 166 L280 160" stroke="white" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <line x1="270" y1="170" x2="280" y2="170" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+      <text x="286" y="165" fill="#b5d4f4" font-size="8.5" font-family="Inter" font-weight="600">EXPORTAR</text>
+    </svg>
+  </div>
+</div>
+
+<div class="main">
+  <div>
+    <div class="card">
+      <div class="card-title">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#1a3a6b" stroke-width="1.7" stroke-linecap="round"><rect x="2" y="2" width="12" height="12" rx="2.5"/><line x1="5" y1="5.5" x2="11" y2="5.5"/><line x1="5" y1="8" x2="11" y2="8"/><line x1="5" y1="10.5" x2="8" y2="10.5"/></svg>
+        Ingresa tus datos
+      </div>
+      <div class="card-sub">Números separados por comas o saltos de línea.</div>
+      <textarea id="dataInput" placeholder="312, 280, 450, 298, 310, 520, 275, 340, 290, 415"></textarea>
+      <div class="card-sub" style="margin-top:14px;margin-bottom:4px;">Tipo de gráfico</div>
+      <div class="chart-tabs">
+        <div class="ctab active" onclick="setTab(this,'bar')">Barras</div>
+        <div class="ctab" onclick="setTab(this,'hist')">Histograma</div>
+        <div class="ctab" onclick="setTab(this,'boxplot')">Box Plot</div>
+        <div class="ctab" onclick="setTab(this,'scatter')">Dispersión</div>
+      </div>
+      <div class="btns">
+        <button class="btn-p" onclick="calcular()">Generar análisis</button>
+        <button class="btn-s" onclick="descargar()">Descargar PNG</button>
+      </div>
+      <div class="stats">
+        <div class="stat hl"><div class="stat-label">Media</div><div class="stat-value" id="s-media">—</div><div class="stat-note">Promedio del grupo</div></div>
+        <div class="stat"><div class="stat-label">Mediana</div><div class="stat-value" id="s-med">—</div><div class="stat-note">Valor central</div></div>
+        <div class="stat"><div class="stat-label">Desv. Estándar</div><div class="stat-value" id="s-de">—</div><div class="stat-note">Dispersión</div></div>
+        <div class="stat"><div class="stat-label">CV</div><div class="stat-value" id="s-cv">—</div><div class="stat-note" id="s-cv-note">Variabilidad</div><div class="cv-wrap"><div class="cv-fill" id="cv-bar" style="width:0%"></div></div></div>
+        <div class="stat"><div class="stat-label">Mínimo</div><div class="stat-value" id="s-min">—</div></div>
+        <div class="stat"><div class="stat-label">Máximo</div><div class="stat-value" id="s-max">—</div></div>
+      </div>
+      <div class="interp" id="interp">
+        <div class="interp-t">Interpretación automática</div>
+        <div id="interp-body"></div>
+      </div>
+    </div>
+  </div>
+  <div class="chart-area">
+    <div class="chart-top">
+      <div><div class="ct-h2" id="chart-title">Visualización estadística</div><div class="ct-p" id="chart-sub">Ingresa datos y presiona "Generar análisis"</div></div>
+      <div class="gg-badge">ggplot2 style</div>
+    </div>
+    <div class="canvas-wrap">
+      <div class="empty" id="empty-state">
+        <svg width="72" height="72" viewBox="0 0 72 72" fill="none" stroke="#c7d4e8" stroke-width="1.8"><circle cx="36" cy="18" r="11" fill="none"/><line x1="36" y1="29" x2="36" y2="50" stroke-linecap="round"/><line x1="36" y1="38" x2="25" y2="46" stroke-linecap="round"/><line x1="36" y1="38" x2="47" y2="46" stroke-linecap="round"/><line x1="36" y1="50" x2="28" y2="63" stroke-linecap="round"/><line x1="36" y1="50" x2="44" y2="63" stroke-linecap="round"/></svg>
+        <p>Tu gráfico aparecerá aquí</p>
+      </div>
+      <canvas id="myChart" style="display:none;"></canvas>
+    </div>
+  </div>
+</div>
+
+<script>
+let chart=null,tipoActivo='bar',datosActuales=[];
+function setTab(el,tipo){document.querySelectorAll('.ctab').forEach(t=>t.classList.remove('active'));el.classList.add('active');tipoActivo=tipo;if(datosActuales.length)calcular();}
+function parsear(txt){return txt.split(/[\n,;]+/).map(s=>parseFloat(s.trim())).filter(n=>!isNaN(n));}
+function media(a){return a.reduce((s,b)=>s+b,0)/a.length;}
+function mediana(a){const s=[...a].sort((x,y)=>x-y),m=Math.floor(s.length/2);return s.length%2?s[m]:(s[m-1]+s[m])/2;}
+function de(a){const m=media(a);return Math.sqrt(a.reduce((s,b)=>s+(b-m)**2,0)/(a.length-1));}
+function cuartiles(a){const s=[...a].sort((x,y)=>x-y),n=s.length;return{q1:mediana(s.slice(0,Math.floor(n/2))),q2:mediana(s),q3:mediana(s.slice(Math.ceil(n/2)))};}
+function histFreqs(a,bins){const mn=Math.min(...a),mx=Math.max(...a),w=(mx-mn)/bins,labels=[],counts=[];for(let i=0;i<bins;i++){const lo=mn+i*w,hi=lo+w;labels.push(lo.toFixed(1));counts.push(a.filter(v=>v>=lo&&(i===bins-1?v<=hi:v<hi)).length);}return{labels,counts};}
+const GG={az:'#2166ac',azP:'rgba(33,102,172,0.78)',rj:'#d6604d',txt:'#333'};
+const BGPLUGIN={id:'ggbg',beforeDraw(c){const{ctx,chartArea:ca}=c;if(!ca)return;ctx.save();ctx.fillStyle='#f7f7f7';ctx.fillRect(ca.left,ca.top,ca.width,ca.height);ctx.restore();}};
+function scGG(xl,yl){return{x:{title:{display:true,text:xl,color:GG.txt,font:{family:'Inter',size:12,weight:'500'}},grid:{color:'rgba(0,0,0,0.07)',lineWidth:1},border:{display:false},ticks:{color:GG.txt,font:{family:'Inter',size:11}}},y:{title:{display:true,text:yl,color:GG.txt,font:{family:'Inter',size:12,weight:'500'}},grid:{color:'rgba(0,0,0,0.10)',lineWidth:1},border:{display:false},beginAtZero:true,ticks:{color:GG.txt,font:{family:'Inter',size:11}}}};}
+function lgGG(){return{position:'top',align:'start',labels:{usePointStyle:true,pointStyle:'rectRounded',padding:18,color:GG.txt,font:{family:'Inter',size:11,weight:'500'}}};}
+function calcular(){
+  const datos=parsear(document.getElementById('dataInput').value);
+  if(datos.length<3){alert('Ingresa al menos 3 datos.');return;}
+  datosActuales=datos;
+  const M=media(datos),Med=mediana(datos),DE=de(datos),CV=(DE/M)*100,Min=Math.min(...datos),Max=Math.max(...datos),N=datos.length;
+  document.getElementById('s-media').textContent=M.toFixed(2);
+  document.getElementById('s-med').textContent=Med.toFixed(2);
+  document.getElementById('s-de').textContent=DE.toFixed(2);
+  document.getElementById('s-cv').textContent=CV.toFixed(1)+'%';
+  document.getElementById('s-min').textContent=Min.toFixed(1);
+  document.getElementById('s-max').textContent=Max.toFixed(1);
+  const cvC=CV<20?'#16a34a':CV<30?'#d97706':'#dc2626';
+  const cvL=CV<20?'Homogéneo':CV<30?'Variabilidad moderada':'Heterogéneo';
+  document.getElementById('s-cv').style.color=cvC;
+  document.getElementById('s-cv-note').textContent=cvL;
+  document.getElementById('s-cv-note').style.color=cvC;
+  document.getElementById('cv-bar').style.width=Math.min(CV,100)+'%';
+  document.getElementById('cv-bar').style.background=cvC;
+  const sesgo=M>Med?'derecha (valores altos elevan el promedio)':M<Med?'izquierda':'simétrica';
+  const recom=CV>=30?'Usa la <strong>mediana</strong> como medida representativa.':'La <strong>media</strong> es una medida representativa adecuada.';
+  document.getElementById('interp').style.display='block';
+  document.getElementById('interp-body').innerHTML=`<div class="iitem"><div class="idot"></div><span>N = <strong>${N}</strong> casos · Rango: ${Min.toFixed(1)} – ${Max.toFixed(1)}</span></div><div class="iitem"><div class="idot"></div><span>Distribución sesgada hacia la <strong>${sesgo}</strong></span></div><div class="iitem"><div class="idot"></div><span>CV = ${CV.toFixed(1)}% → <strong style="color:${cvC}">${cvL}</strong>. ${recom}</span></div><div class="iitem"><div class="idot"></div><span>DE = ${DE.toFixed(2)}: dispersión promedio respecto a la media</span></div>`;
+  document.getElementById('empty-state').style.display='none';
+  document.getElementById('myChart').style.display='block';
+  if(chart){chart.destroy();chart=null;}
+  const ctx=document.getElementById('myChart').getContext('2d');
+  let cfg;
+  if(tipoActivo==='bar'){
+    document.getElementById('chart-title').textContent='Gráfico de barras · Distribución de observaciones';
+    document.getElementById('chart-sub').textContent=`N = ${N} · Media = ${M.toFixed(2)} · DE = ${DE.toFixed(2)} · Línea roja = media`;
+    cfg={type:'bar',plugins:[BGPLUGIN],data:{labels:datos.map((_,i)=>`Obs.${i+1}`),datasets:[{label:'Valor observado',data:datos,backgroundColor:GG.azP,borderColor:GG.az,borderWidth:1,borderRadius:2,barPercentage:.75},{label:`Media = ${M.toFixed(2)}`,data:Array(N).fill(M),type:'line',borderColor:GG.rj,borderWidth:2,borderDash:[6,4],pointRadius:0,fill:false}]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:800},plugins:{legend:lgGG()},scales:scGG('Observación','Valor')}};
+  }else if(tipoActivo==='hist'){
+    const bins=Math.min(10,Math.ceil(Math.sqrt(N)));
+    const{labels,counts}=histFreqs(datos,bins);
+    document.getElementById('chart-title').textContent='Histograma · Distribución de frecuencias';
+    document.getElementById('chart-sub').textContent=`N = ${N} · ${bins} intervalos de igual amplitud`;
+    cfg={type:'bar',plugins:[BGPLUGIN],data:{labels,datasets:[{label:'Frecuencia',data:counts,backgroundColor:GG.azP,borderColor:GG.az,borderWidth:1,borderRadius:0,barPercentage:1,categoryPercentage:1}]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:800},plugins:{legend:lgGG()},scales:scGG('Valor','Frecuencia')}};
+  }else if(tipoActivo==='scatter'){
+    const s=[...datos].sort((a,b)=>a-b);
+    const pts=s.map((v,i)=>({x:i+1,y:v}));
+    const slp=(N*s.reduce((t,v,i)=>t+(i+1)*v,0)-s.reduce((a,b)=>a+b,0)*s.reduce((t,_,i)=>t+i+1,0))/(N*s.reduce((t,_,i)=>t+(i+1)**2,0)-s.reduce((t,_,i)=>t+i+1,0)**2);
+    const int=(s.reduce((a,b)=>a+b,0)-slp*s.reduce((t,_,i)=>t+i+1,0))/N;
+    document.getElementById('chart-title').textContent='Gráfico de dispersión · Valores ordenados';
+    document.getElementById('chart-sub').textContent=`N = ${N} · Línea de tendencia en rojo`;
+    cfg={type:'scatter',plugins:[BGPLUGIN],data:{datasets:[{label:'Observaciones',data:pts,backgroundColor:GG.azP,borderColor:GG.az,borderWidth:1,pointRadius:5,pointHoverRadius:7},{label:'Tendencia',data:[{x:1,y:int+slp},{x:N,y:int+slp*N}],type:'line',borderColor:GG.rj,borderWidth:2,borderDash:[6,4],pointRadius:0,fill:false,showLine:true}]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:800},plugins:{legend:lgGG()},scales:scGG('Rango','Valor')}};
+  }else if(tipoActivo==='boxplot'){
+    const{q1,q2,q3}=cuartiles(datos);
+    const iqr=q3-q1,vMin=Math.max(Min,q1-1.5*iqr),vMax=Math.min(Max,q3+1.5*iqr);
+    const outliers=datos.filter(v=>v<q1-1.5*iqr||v>q3+1.5*iqr);
+    document.getElementById('chart-title').textContent='Diagrama de cajas · Box Plot';
+    document.getElementById('chart-sub').textContent=`Q1=${q1.toFixed(1)} · Q2=${q2.toFixed(1)} · Q3=${q3.toFixed(1)} · IQR=${iqr.toFixed(1)} · Outliers=${outliers.length}`;
+    const BP={id:'bp',beforeDraw(c){const{ctx,chartArea:ca}=c;if(!ca)return;ctx.save();ctx.fillStyle='#f7f7f7';ctx.fillRect(ca.left,ca.top,ca.width,ca.height);ctx.restore();},afterDraw(c){const{ctx,chartArea:ca}=c,sc=c.scales.y,cx=(ca.left+ca.right)/2,bw=100;const yq1=sc.getPixelForValue(q1),yq3=sc.getPixelForValue(q3),ymed=sc.getPixelForValue(q2),ymn=sc.getPixelForValue(vMin),ymx=sc.getPixelForValue(vMax),ym=sc.getPixelForValue(M);ctx.save();ctx.fillStyle='rgba(33,102,172,0.18)';ctx.fillRect(cx-bw/2,yq3,bw,yq1-yq3);ctx.strokeStyle=GG.az;ctx.lineWidth=2;ctx.strokeRect(cx-bw/2,yq3,bw,yq1-yq3);ctx.beginPath();ctx.moveTo(cx-bw/2,ymed);ctx.lineTo(cx+bw/2,ymed);ctx.strokeStyle=GG.rj;ctx.lineWidth=2.5;ctx.stroke();ctx.strokeStyle=GG.az;ctx.lineWidth=1.5;[[cx,yq1,cx,ymn],[cx,yq3,cx,ymx]].forEach(([x1,y1,x2,y2])=>{ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();});[[cx-20,ymn,cx+20,ymn],[cx-20,ymx,cx+20,ymx]].forEach(([x1,y1,x2,y2])=>{ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();});ctx.fillStyle=GG.rj;ctx.beginPath();ctx.moveTo(cx,ym-6);ctx.lineTo(cx+6,ym);ctx.lineTo(cx,ym+6);ctx.lineTo(cx-6,ym);ctx.closePath();ctx.fill();outliers.forEach(v=>{const yo=sc.getPixelForValue(v);ctx.fillStyle='rgba(214,96,77,0.65)';ctx.beginPath();ctx.arc(cx,yo,5,0,Math.PI*2);ctx.fill();ctx.strokeStyle=GG.rj;ctx.lineWidth=1;ctx.stroke();});ctx.fillStyle=GG.txt;ctx.font='11px Inter';ctx.textAlign='right';[[`Q3=${q3.toFixed(1)}`,cx-bw/2-6,yq3+4],[`Med=${q2.toFixed(1)}`,cx-bw/2-6,ymed+4],[`Q1=${q1.toFixed(1)}`,cx-bw/2-6,yq1+4],[`Max=${vMax.toFixed(1)}`,cx-bw/2-6,ymx+4],[`Min=${vMin.toFixed(1)}`,cx-bw/2-6,ymn+4]].forEach(([t,x,y])=>{ctx.fillText(t,x,y);});if(outliers.length){ctx.fillStyle=GG.rj;ctx.fillText(`${outliers.length} outlier(s)`,cx-bw/2-6,ymx-12);}ctx.restore();}};
+    const allV=[vMin,q1,q2,q3,vMax,...outliers];
+    cfg={type:'scatter',plugins:[BP],data:{datasets:[{data:[]}]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:600},plugins:{legend:{display:false}},scales:{x:{display:false,min:0,max:1},y:{min:Math.min(...allV)*0.94,max:Math.max(...allV)*1.06,title:{display:true,text:'Valor',color:GG.txt,font:{family:'Inter',size:12,weight:'500'}},grid:{color:'rgba(0,0,0,0)'},border:{display:false},ticks:{color:GG.txt,font:{family:'Inter',size:11}}}}}};
+  }
+  chart=new Chart(ctx,cfg);
+}
+function descargar(){
+  if(!chart){alert('Genera primero un análisis.');return;}
+  const cv=document.getElementById('myChart');
+  const tmp=document.createElement('canvas');
+  tmp.width=cv.width*2;tmp.height=cv.height*2;
+  const tc=tmp.getContext('2d');
+  tc.scale(2,2);tc.fillStyle='#ffffff';tc.fillRect(0,0,cv.width,cv.height);tc.drawImage(cv,0,0);
+  const link=document.createElement('a');
+  link.download=`grafico_${tipoActivo}.png`;
+  link.href=tmp.toDataURL('image/png',1.0);link.click();
+}
+</script>
+</body>
+</html>

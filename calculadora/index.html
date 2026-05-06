@@ -1,212 +1,4 @@
-<!-- =========================================================
-CALCULADORA ESTADÍSTICA VISUAL - ESTILO DOODLE
-Para GitHub Pages
-Autor base: Mario Leguizamo + ChatGPT
-========================================================= -->
-
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Calculadora Estadística Visual</title>
-
-  <!-- Fuente -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
-
-  <!-- ChartJS -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-  <style>
-
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-    }
-
-    body{
-      font-family:'Nunito', sans-serif;
-      background:#fffdf7;
-      color:#222;
-      padding:40px;
-    }
-
-    .container{
-      max-width:1200px;
-      margin:auto;
-    }
-
-    .title{
-      text-align:center;
-      margin-bottom:30px;
-    }
-
-    .title h1{
-      font-size:3rem;
-      font-weight:900;
-      transform:rotate(-1deg);
-    }
-
-    .title p{
-      margin-top:10px;
-      font-size:1.1rem;
-      color:#555;
-    }
-
-    .card{
-      background:white;
-      border:4px solid #222;
-      border-radius:25px;
-      padding:25px;
-      margin-bottom:25px;
-      box-shadow:8px 8px 0px #222;
-    }
-
-    .doodle{
-      display:inline-block;
-      background:#ffe66d;
-      padding:5px 12px;
-      border-radius:15px;
-      border:2px solid #222;
-      font-weight:700;
-      margin-bottom:15px;
-      transform:rotate(-2deg);
-    }
-
-    textarea{
-      width:100%;
-      min-height:120px;
-      border:3px solid #222;
-      border-radius:20px;
-      padding:15px;
-      font-size:1rem;
-      resize:vertical;
-      background:#fff;
-    }
-
-    button{
-      margin-top:20px;
-      padding:14px 22px;
-      border:none;
-      border-radius:18px;
-      background:#4ecdc4;
-      color:#222;
-      font-weight:900;
-      font-size:1rem;
-      cursor:pointer;
-      border:3px solid #222;
-      box-shadow:5px 5px 0px #222;
-      transition:0.2s;
-    }
-
-    button:hover{
-      transform:translateY(-3px);
-    }
-
-    .results{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-      gap:20px;
-      margin-top:25px;
-    }
-
-    .stat-box{
-      background:#fafafa;
-      border:3px solid #222;
-      border-radius:20px;
-      padding:20px;
-      text-align:center;
-    }
-
-    .stat-box h3{
-      margin-bottom:10px;
-      font-size:1rem;
-    }
-
-    .stat-box p{
-      font-size:2rem;
-      font-weight:900;
-    }
-
-    canvas{
-      margin-top:30px;
-      background:white;
-      border:3px solid #222;
-      border-radius:20px;
-      padding:10px;
-    }
-
-    .download-btn{
-      background:#ff6b6b;
-      margin-left:10px;
-    }
-
-    .footer-note{
-      margin-top:20px;
-      color:#666;
-      font-size:0.9rem;
-      text-align:center;
-    }
-
-  </style>
-</head>
-
-<body>
-
-<div class="container">
-
-  <div class="title">
-    <h1>📊 Calculadora Estadística Visual</h1>
-    <p>Ingresa datos separados por comas y genera gráficos descargables para Word o tesis.</p>
-  </div>
-
-  <div class="card">
-
-    <div class="doodle">✏️ Ingresar datos</div>
-
-    <textarea id="dataInput" placeholder="Ejemplo:
-10, 20, 30, 40, 50"></textarea>
-
-    <button onclick="calculateStats()">🚀 Calcular</button>
-    <button class="download-btn" onclick="downloadChart()">⬇ Descargar gráfico</button>
-
-    <div class="results">
-
-      <div class="stat-box">
-        <h3>📌 Media</h3>
-        <p id="mean">-</p>
-      </div>
-
-      <div class="stat-box">
-        <h3>📌 Mediana</h3>
-        <p id="median">-</p>
-      </div>
-
-      <div class="stat-box">
-        <h3>📌 Moda</h3>
-        <p id="mode">-</p>
-      </div>
-
-      <div class="stat-box">
-        <h3>📌 Desv. Estándar</h3>
-        <p id="std">-</p>
-      </div>
-
-    </div>
-
-    <canvas id="myChart"></canvas>
-
-    <div class="footer-note">
-      ✨ Puedes descargar el gráfico y pegarlo directamente en Word, PowerPoint o tu tesis.
-    </div>
-
-  </div>
-
-</div>
-
-<script>
+ <script>
 
 let chart;
 
@@ -224,10 +16,12 @@ function calculateStats(){
       return;
     }
 
-    // MEDIA
+    // =========================
+    // ESTADÍSTICAS
+    // =========================
+
     const mean = data.reduce((a,b)=>a+b,0)/data.length;
 
-    // MEDIANA
     const sorted = [...data].sort((a,b)=>a-b);
 
     let median;
@@ -238,7 +32,6 @@ function calculateStats(){
       median = sorted[Math.floor(sorted.length/2)];
     }
 
-    // MODA
     const freq = {};
 
     data.forEach(num=>{
@@ -249,54 +42,131 @@ function calculateStats(){
       freq[a] > freq[b] ? a : b
     );
 
-    // DESVIACION ESTANDAR
     const variance = data.reduce((sum,num)=>
       sum + Math.pow(num - mean,2),0)/data.length;
 
     const std = Math.sqrt(variance);
 
-    // Mostrar resultados
+    // =========================
+    // MOSTRAR RESULTADOS
+    // =========================
+
     document.getElementById("mean").innerText = mean.toFixed(2);
     document.getElementById("median").innerText = median;
     document.getElementById("mode").innerText = mode;
     document.getElementById("std").innerText = std.toFixed(2);
 
-    // Gráfico
-    const ctx = document.getElementById('myChart');
+    // =========================
+    // DESTRUIR GRÁFICO ANTERIOR
+    // =========================
 
     if(chart){
       chart.destroy();
     }
 
+    // =========================
+    // GRÁFICO ESTILO GGPLOT2
+    // =========================
+
+    const ctx = document.getElementById('myChart');
+
     chart = new Chart(ctx, {
+
       type:'bar',
+
       data:{
-        labels:data.map((_,i)=>`Dato ${i+1}`),
+        labels:data.map((_,i)=>`Obs ${i+1}`),
+
         datasets:[{
-          label:'Valores',
+          label:'Distribución de datos',
+
           data:data,
-          borderWidth:3,
-          borderRadius:10
+
+          backgroundColor:'rgba(54, 162, 235, 0.75)',
+
+          borderColor:'rgba(54, 162, 235, 1)',
+
+          borderWidth:1.5,
+
+          borderRadius:4,
+
+          hoverBackgroundColor:'rgba(54, 162, 235, 0.9)'
         }]
       },
+
       options:{
+
         responsive:true,
+
+        maintainAspectRatio:false,
+
+        animation:{
+          duration:1200
+        },
+
         plugins:{
+
           legend:{
+            display:true,
+
             labels:{
+              color:'#222',
               font:{
-                size:16,
-                family:'Nunito'
+                family:'Arial',
+                size:14
               }
             }
+          },
+
+          title:{
+            display:true,
+            text:'Visualización Estadística',
+            color:'#222',
+            font:{
+              size:20,
+              family:'Arial'
+            },
+            padding:{
+              top:10,
+              bottom:25
+            }
           }
+
         },
+
         scales:{
+
+          x:{
+
+            grid:{
+              display:false
+            },
+
+            ticks:{
+              color:'#444',
+              font:{
+                size:12
+              }
+            }
+          },
+
           y:{
-            beginAtZero:true
+
+            beginAtZero:true,
+
+            grid:{
+              color:'rgba(0,0,0,0.08)'
+            },
+
+            ticks:{
+              color:'#444'
+            }
           }
+
         }
+
       }
+
     });
 
 }
@@ -305,16 +175,14 @@ function downloadChart(){
 
     const canvas = document.getElementById("myChart");
 
+    // Alta resolución
     const link = document.createElement('a');
 
-    link.download = 'grafico_estadistico.png';
+    link.download = 'grafico_ggplot_estilo.png';
 
-    link.href = canvas.toDataURL('image/png');
+    link.href = canvas.toDataURL('image/png', 1.0);
 
     link.click();
 }
 
 </script>
-
-</body>
-</html>

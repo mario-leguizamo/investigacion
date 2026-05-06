@@ -1,0 +1,710 @@
+<!-- =========================================================
+CALCULADORA ESTADÍSTICA CIENTÍFICA PREMIUM
+Estilo: Artículo científico + ggplot2 + toque doodle elegante
+Ideal para GitHub Pages
+========================================================= -->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Scientific Stats Lab</title>
+
+<!-- FONT -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+
+<!-- CHARTJS -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    font-family:'Inter', sans-serif;
+
+    background:
+    radial-gradient(circle at top left, #f3f4f6 0%, #ffffff 40%);
+
+    color:#1f2937;
+
+    padding:40px;
+}
+
+/* =========================
+LAYOUT
+========================= */
+
+.container{
+    max-width:1400px;
+    margin:auto;
+}
+
+/* =========================
+HEADER
+========================= */
+
+.hero{
+
+    margin-bottom:40px;
+
+    position:relative;
+}
+
+.badge{
+
+    display:inline-block;
+
+    background:#111827;
+
+    color:white;
+
+    padding:8px 16px;
+
+    border-radius:999px;
+
+    font-size:0.85rem;
+
+    font-weight:700;
+
+    letter-spacing:1px;
+
+    margin-bottom:20px;
+}
+
+.hero h1{
+
+    font-size:4rem;
+
+    line-height:1.05;
+
+    font-weight:800;
+
+    max-width:900px;
+
+    margin-bottom:18px;
+}
+
+.hero p{
+
+    max-width:750px;
+
+    color:#6b7280;
+
+    font-size:1.15rem;
+
+    line-height:1.8;
+}
+
+/* =========================
+MAIN GRID
+========================= */
+
+.grid{
+
+    display:grid;
+
+    grid-template-columns:420px 1fr;
+
+    gap:30px;
+}
+
+/* =========================
+CARD
+========================= */
+
+.card{
+
+    background:white;
+
+    border:1px solid #e5e7eb;
+
+    border-radius:28px;
+
+    padding:30px;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,0.04);
+}
+
+/* =========================
+LEFT PANEL
+========================= */
+
+.panel-title{
+
+    font-size:1.3rem;
+
+    font-weight:800;
+
+    margin-bottom:10px;
+}
+
+.panel-sub{
+
+    color:#6b7280;
+
+    margin-bottom:25px;
+
+    line-height:1.6;
+}
+
+textarea{
+
+    width:100%;
+
+    min-height:180px;
+
+    border:1px solid #d1d5db;
+
+    border-radius:20px;
+
+    padding:18px;
+
+    font-size:1rem;
+
+    font-family:inherit;
+
+    resize:vertical;
+
+    outline:none;
+
+    transition:0.2s;
+}
+
+textarea:focus{
+
+    border-color:#2563eb;
+
+    box-shadow:0 0 0 4px rgba(37,99,235,0.1);
+}
+
+.btn-group{
+
+    display:flex;
+
+    gap:15px;
+
+    margin-top:20px;
+}
+
+button{
+
+    flex:1;
+
+    padding:16px;
+
+    border:none;
+
+    border-radius:18px;
+
+    font-size:1rem;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:0.2s;
+}
+
+.primary{
+
+    background:#111827;
+
+    color:white;
+}
+
+.primary:hover{
+
+    transform:translateY(-2px);
+}
+
+.secondary{
+
+    background:#eef2ff;
+
+    color:#1e3a8a;
+}
+
+.secondary:hover{
+
+    transform:translateY(-2px);
+}
+
+/* =========================
+STATISTICS
+========================= */
+
+.stats-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:18px;
+
+    margin-top:30px;
+}
+
+.stat{
+
+    background:#f9fafb;
+
+    border:1px solid #e5e7eb;
+
+    border-radius:20px;
+
+    padding:20px;
+}
+
+.stat span{
+
+    display:block;
+
+    color:#6b7280;
+
+    font-size:0.9rem;
+
+    margin-bottom:10px;
+}
+
+.stat h2{
+
+    font-size:2rem;
+
+    font-weight:800;
+}
+
+/* =========================
+GRAPH PANEL
+========================= */
+
+.chart-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:25px;
+}
+
+.chart-title{
+
+    font-size:1.4rem;
+
+    font-weight:800;
+}
+
+.chart-sub{
+
+    color:#6b7280;
+
+    margin-top:5px;
+}
+
+canvas{
+
+    width:100% !important;
+
+    height:600px !important;
+}
+
+/* =========================
+DOODLES
+========================= */
+
+.doodle{
+
+    position:absolute;
+
+    right:0;
+
+    top:0;
+
+    font-size:4rem;
+
+    opacity:0.08;
+
+    transform:rotate(12deg);
+}
+
+/* =========================
+FOOTER NOTE
+========================= */
+
+.note{
+
+    margin-top:25px;
+
+    padding:18px;
+
+    background:#f9fafb;
+
+    border-radius:16px;
+
+    color:#6b7280;
+
+    line-height:1.7;
+
+    font-size:0.95rem;
+}
+
+/* =========================
+RESPONSIVE
+========================= */
+
+@media(max-width:1100px){
+
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+    .hero h1{
+        font-size:3rem;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- HERO -->
+
+    <div class="hero">
+
+        <div class="badge">
+            SCIENTIFIC VISUAL ANALYTICS
+        </div>
+
+        <h1>
+            Calculadora Estadística Visual para Artículos Científicos
+        </h1>
+
+        <p>
+            Genera estadísticas descriptivas y gráficos académicos estilo ggplot2 listos para tesis, artículos científicos y publicaciones universitarias.
+        </p>
+
+        <div class="doodle">
+            ✏️📊🧠
+        </div>
+
+    </div>
+
+    <!-- GRID -->
+
+    <div class="grid">
+
+        <!-- LEFT -->
+
+        <div class="card">
+
+            <div class="panel-title">
+                Dataset Input
+            </div>
+
+            <div class="panel-sub">
+                Introduce valores separados por comas para generar automáticamente análisis estadístico y visualizaciones científicas.
+            </div>
+
+            <textarea id="dataInput" placeholder="Ejemplo:
+23, 45, 12, 67, 89, 34, 56"></textarea>
+
+            <div class="btn-group">
+
+                <button class="primary" onclick="calculateStats()">
+                    Generar análisis
+                </button>
+
+                <button class="secondary" onclick="downloadChart()">
+                    Descargar PNG
+                </button>
+
+            </div>
+
+            <!-- STATS -->
+
+            <div class="stats-grid">
+
+                <div class="stat">
+                    <span>Media</span>
+                    <h2 id="mean">-</h2>
+                </div>
+
+                <div class="stat">
+                    <span>Mediana</span>
+                    <h2 id="median">-</h2>
+                </div>
+
+                <div class="stat">
+                    <span>Moda</span>
+                    <h2 id="mode">-</h2>
+                </div>
+
+                <div class="stat">
+                    <span>Desv. estándar</span>
+                    <h2 id="std">-</h2>
+                </div>
+
+            </div>
+
+            <div class="note">
+                ✨ Los gráficos se descargan en alta resolución para insertarlos directamente en Word, PowerPoint, tesis o artículos científicos.
+            </div>
+
+        </div>
+
+        <!-- RIGHT -->
+
+        <div class="card">
+
+            <div class="chart-header">
+
+                <div>
+
+                    <div class="chart-title">
+                        Statistical Visualization
+                    </div>
+
+                    <div class="chart-sub">
+                        Academic style inspired by ggplot2
+                    </div>
+
+                </div>
+
+            </div>
+
+            <canvas id="myChart"></canvas>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+let chart;
+
+function calculateStats(){
+
+    const input = document.getElementById("dataInput").value;
+
+    const data = input
+    .split(",")
+    .map(n => parseFloat(n.trim()))
+    .filter(n => !isNaN(n));
+
+    if(data.length === 0){
+        alert("Ingresa datos válidos.");
+        return;
+    }
+
+    // =========================
+    // STATS
+    // =========================
+
+    const mean = data.reduce((a,b)=>a+b,0)/data.length;
+
+    const sorted = [...data].sort((a,b)=>a-b);
+
+    let median;
+
+    if(sorted.length % 2 === 0){
+
+        median = (
+            sorted[sorted.length/2 -1] +
+            sorted[sorted.length/2]
+        ) / 2;
+
+    }else{
+
+        median = sorted[Math.floor(sorted.length/2)];
+    }
+
+    const freq = {};
+
+    data.forEach(num=>{
+        freq[num] = (freq[num] || 0) +1;
+    });
+
+    let mode = Object.keys(freq).reduce((a,b)=>
+        freq[a] > freq[b] ? a : b
+    );
+
+    const variance = data.reduce((sum,num)=>
+        sum + Math.pow(num - mean,2),0)/data.length;
+
+    const std = Math.sqrt(variance);
+
+    // =========================
+    // UPDATE UI
+    // =========================
+
+    document.getElementById("mean").innerText = mean.toFixed(2);
+    document.getElementById("median").innerText = median;
+    document.getElementById("mode").innerText = mode;
+    document.getElementById("std").innerText = std.toFixed(2);
+
+    // =========================
+    // DESTROY OLD CHART
+    // =========================
+
+    if(chart){
+        chart.destroy();
+    }
+
+    // =========================
+    // CHART
+    // =========================
+
+    const ctx = document.getElementById("myChart");
+
+    chart = new Chart(ctx, {
+
+        type:'bar',
+
+        data:{
+
+            labels:data.map((_,i)=>`Obs ${i+1}`),
+
+            datasets:[{
+
+                label:'Variable analizada',
+
+                data:data,
+
+                backgroundColor:'rgba(59,130,246,0.75)',
+
+                borderColor:'rgba(59,130,246,1)',
+
+                borderWidth:1,
+
+                borderRadius:5,
+
+                hoverBackgroundColor:'rgba(37,99,235,0.9)'
+
+            }]
+        },
+
+        options:{
+
+            responsive:true,
+
+            maintainAspectRatio:false,
+
+            animation:{
+                duration:1200
+            },
+
+            plugins:{
+
+                legend:{
+
+                    labels:{
+                        color:'#374151',
+                        font:{
+                            size:14,
+                            family:'Inter'
+                        }
+                    }
+                },
+
+                title:{
+
+                    display:true,
+
+                    text:'Distribución de datos',
+
+                    color:'#111827',
+
+                    font:{
+                        size:22,
+                        weight:'700',
+                        family:'Inter'
+                    },
+
+                    padding:{
+                        top:10,
+                        bottom:30
+                    }
+                }
+
+            },
+
+            scales:{
+
+                x:{
+
+                    grid:{
+                        display:false
+                    },
+
+                    ticks:{
+                        color:'#6b7280',
+                        font:{
+                            size:12
+                        }
+                    }
+                },
+
+                y:{
+
+                    beginAtZero:true,
+
+                    grid:{
+                        color:'rgba(107,114,128,0.12)'
+                    },
+
+                    border:{
+                        dash:[4,4]
+                    },
+
+                    ticks:{
+                        color:'#6b7280',
+                        font:{
+                            size:12
+                        }
+                    }
+                }
+
+            }
+
+        }
+
+    });
+
+}
+
+function downloadChart(){
+
+    const canvas = document.getElementById("myChart");
+
+    const link = document.createElement('a');
+
+    link.download = 'scientific_chart.png';
+
+    link.href = canvas.toDataURL('image/png',1.0);
+
+    link.click();
+}
+
+</script>
+
+</body>
+</html>

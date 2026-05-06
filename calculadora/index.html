@@ -1,23 +1,24 @@
 <!-- =========================================================
-CALCULADORA ESTADÍSTICA CIENTÍFICA PREMIUM
-Estilo: Artículo científico + ggplot2 + toque doodle elegante
-Ideal para GitHub Pages
+SCIENTIFIC STATISTICS LAB
+Estilo: ggplot2 + artículo científico + visual premium
+Listo para GitHub Pages
 ========================================================= -->
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Scientific Stats Lab</title>
+<title>Scientific Statistics Lab</title>
 
-<!-- FONT -->
+<!-- GOOGLE FONT -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;800&display=swap" rel="stylesheet">
 
-<!-- CHARTJS -->
+<!-- CHART JS -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
@@ -33,25 +34,33 @@ body{
     font-family:'Inter', sans-serif;
 
     background:
-    radial-gradient(circle at top left, #f3f4f6 0%, #ffffff 40%);
+    linear-gradient(
+        135deg,
+        #f8fafc 0%,
+        #eef2f7 100%
+    );
 
-    color:#1f2937;
+    color:#111827;
 
-    padding:40px;
+    min-height:100vh;
+
+    padding:50px;
 }
 
-/* =========================
-LAYOUT
-========================= */
+/* ======================================
+MAIN CONTAINER
+====================================== */
 
 .container{
-    max-width:1400px;
+
+    max-width:1500px;
+
     margin:auto;
 }
 
-/* =========================
-HEADER
-========================= */
+/* ======================================
+TOP HERO
+====================================== */
 
 .hero{
 
@@ -62,52 +71,59 @@ HEADER
 
 .badge{
 
-    display:inline-block;
+    display:inline-flex;
 
-    background:#111827;
+    align-items:center;
 
-    color:white;
+    gap:10px;
 
-    padding:8px 16px;
+    background:white;
+
+    border:1px solid #dbe2ea;
+
+    padding:10px 18px;
 
     border-radius:999px;
 
-    font-size:0.85rem;
+    font-size:0.9rem;
 
     font-weight:700;
 
-    letter-spacing:1px;
+    margin-bottom:25px;
 
-    margin-bottom:20px;
+    box-shadow:
+    0 8px 20px rgba(0,0,0,0.04);
 }
 
 .hero h1{
 
-    font-size:4rem;
+    font-size:4.5rem;
 
     line-height:1.05;
 
     font-weight:800;
 
-    max-width:900px;
+    max-width:1000px;
 
-    margin-bottom:18px;
+    margin-bottom:20px;
+
+    letter-spacing:-2px;
 }
 
 .hero p{
 
-    max-width:750px;
+    font-size:1.15rem;
 
     color:#6b7280;
 
-    font-size:1.15rem;
+    max-width:850px;
 
-    line-height:1.8;
+    line-height:1.9;
 }
 
-/* =========================
-MAIN GRID
-========================= */
+/* ======================================
+GRID
+====================================== */
 
 .grid{
 
@@ -115,60 +131,60 @@ MAIN GRID
 
     grid-template-columns:420px 1fr;
 
-    gap:30px;
+    gap:35px;
 }
 
-/* =========================
+/* ======================================
 CARD
-========================= */
+====================================== */
 
 .card{
 
     background:white;
 
+    border-radius:30px;
+
+    padding:35px;
+
     border:1px solid #e5e7eb;
 
-    border-radius:28px;
-
-    padding:30px;
-
     box-shadow:
-    0 10px 30px rgba(0,0,0,0.04);
+    0 25px 60px rgba(0,0,0,0.05);
 }
 
-/* =========================
-LEFT PANEL
-========================= */
+/* ======================================
+INPUT SECTION
+====================================== */
 
-.panel-title{
+.section-title{
 
-    font-size:1.3rem;
+    font-size:1.5rem;
 
     font-weight:800;
 
-    margin-bottom:10px;
+    margin-bottom:12px;
 }
 
-.panel-sub{
+.section-sub{
 
     color:#6b7280;
 
-    margin-bottom:25px;
+    line-height:1.7;
 
-    line-height:1.6;
+    margin-bottom:25px;
 }
 
 textarea{
 
     width:100%;
 
-    min-height:180px;
+    min-height:220px;
 
     border:1px solid #d1d5db;
 
-    border-radius:20px;
+    border-radius:24px;
 
-    padding:18px;
+    padding:22px;
 
     font-size:1rem;
 
@@ -178,34 +194,41 @@ textarea{
 
     outline:none;
 
-    transition:0.2s;
+    background:#fcfcfd;
+
+    transition:0.25s;
 }
 
 textarea:focus{
 
     border-color:#2563eb;
 
-    box-shadow:0 0 0 4px rgba(37,99,235,0.1);
+    box-shadow:
+    0 0 0 5px rgba(37,99,235,0.08);
 }
 
-.btn-group{
+/* ======================================
+BUTTONS
+====================================== */
+
+.buttons{
 
     display:flex;
 
     gap:15px;
 
-    margin-top:20px;
+    margin-top:25px;
 }
 
 button{
 
     flex:1;
 
-    padding:16px;
-
     border:none;
 
     border-radius:18px;
+
+    padding:17px;
 
     font-size:1rem;
 
@@ -225,26 +248,26 @@ button{
 
 .primary:hover{
 
-    transform:translateY(-2px);
+    transform:translateY(-3px);
 }
 
 .secondary{
 
-    background:#eef2ff;
+    background:#eff6ff;
 
-    color:#1e3a8a;
+    color:#1d4ed8;
 }
 
 .secondary:hover{
 
-    transform:translateY(-2px);
+    transform:translateY(-3px);
 }
 
-/* =========================
-STATISTICS
-========================= */
+/* ======================================
+STATS
+====================================== */
 
-.stats-grid{
+.stats{
 
     display:grid;
 
@@ -261,68 +284,99 @@ STATISTICS
 
     border:1px solid #e5e7eb;
 
-    border-radius:20px;
+    border-radius:22px;
 
-    padding:20px;
+    padding:22px;
 }
 
-.stat span{
-
-    display:block;
+.stat-label{
 
     color:#6b7280;
 
-    font-size:0.9rem;
+    font-size:0.95rem;
 
     margin-bottom:10px;
 }
 
-.stat h2{
+.stat-value{
 
-    font-size:2rem;
+    font-size:2.2rem;
 
     font-weight:800;
 }
 
-/* =========================
-GRAPH PANEL
-========================= */
+/* ======================================
+CHART SECTION
+====================================== */
 
 .chart-header{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
 
     margin-bottom:25px;
 }
 
 .chart-title{
 
-    font-size:1.4rem;
+    font-size:1.8rem;
 
     font-weight:800;
+
+    margin-bottom:8px;
 }
 
 .chart-sub{
 
     color:#6b7280;
+}
 
-    margin-top:5px;
+/* ======================================
+CANVAS
+====================================== */
+
+.chart-container{
+
+    background:white;
+
+    border-radius:28px;
+
+    padding:30px;
+
+    border:1px solid #edf1f5;
+
+    box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.8);
 }
 
 canvas{
 
     width:100% !important;
 
-    height:600px !important;
+    height:700px !important;
 }
 
-/* =========================
+/* ======================================
+FOOTER NOTE
+====================================== */
+
+.note{
+
+    margin-top:25px;
+
+    background:#f8fafc;
+
+    border-radius:18px;
+
+    padding:18px;
+
+    color:#6b7280;
+
+    line-height:1.8;
+
+    font-size:0.95rem;
+}
+
+/* ======================================
 DOODLES
-========================= */
+====================================== */
 
 .doodle{
 
@@ -330,39 +384,18 @@ DOODLES
 
     right:0;
 
-    top:0;
+    top:10px;
 
     font-size:4rem;
 
-    opacity:0.08;
+    opacity:0.06;
 
     transform:rotate(12deg);
 }
 
-/* =========================
-FOOTER NOTE
-========================= */
-
-.note{
-
-    margin-top:25px;
-
-    padding:18px;
-
-    background:#f9fafb;
-
-    border-radius:16px;
-
-    color:#6b7280;
-
-    line-height:1.7;
-
-    font-size:0.95rem;
-}
-
-/* =========================
+/* ======================================
 RESPONSIVE
-========================= */
+====================================== */
 
 @media(max-width:1100px){
 
@@ -389,19 +422,19 @@ RESPONSIVE
     <div class="hero">
 
         <div class="badge">
-            SCIENTIFIC VISUAL ANALYTICS
+            📊 SCIENTIFIC VISUAL ANALYTICS
         </div>
 
         <h1>
-            Calculadora Estadística Visual para Artículos Científicos
+            Calculadora Estadística Visual
         </h1>
 
         <p>
-            Genera estadísticas descriptivas y gráficos académicos estilo ggplot2 listos para tesis, artículos científicos y publicaciones universitarias.
+            Genera estadísticas descriptivas y gráficos académicos premium estilo ggplot2 listos para artículos científicos, tesis y publicaciones universitarias.
         </p>
 
         <div class="doodle">
-            ✏️📊🧠
+            ✏️📈🧠
         </div>
 
     </div>
@@ -410,22 +443,23 @@ RESPONSIVE
 
     <div class="grid">
 
-        <!-- LEFT -->
+        <!-- LEFT PANEL -->
 
         <div class="card">
 
-            <div class="panel-title">
+            <div class="section-title">
                 Dataset Input
             </div>
 
-            <div class="panel-sub">
-                Introduce valores separados por comas para generar automáticamente análisis estadístico y visualizaciones científicas.
+            <div class="section-sub">
+                Introduce números separados por comas para generar análisis estadístico automático y visualizaciones académicas profesionales.
             </div>
 
             <textarea id="dataInput" placeholder="Ejemplo:
-23, 45, 12, 67, 89, 34, 56"></textarea>
 
-            <div class="btn-group">
+12, 45, 33, 78, 22, 90, 41, 67"></textarea>
+
+            <div class="buttons">
 
                 <button class="primary" onclick="calculateStats()">
                     Generar análisis
@@ -439,57 +473,57 @@ RESPONSIVE
 
             <!-- STATS -->
 
-            <div class="stats-grid">
+            <div class="stats">
 
                 <div class="stat">
-                    <span>Media</span>
-                    <h2 id="mean">-</h2>
+                    <div class="stat-label">Media</div>
+                    <div class="stat-value" id="mean">-</div>
                 </div>
 
                 <div class="stat">
-                    <span>Mediana</span>
-                    <h2 id="median">-</h2>
+                    <div class="stat-label">Mediana</div>
+                    <div class="stat-value" id="median">-</div>
                 </div>
 
                 <div class="stat">
-                    <span>Moda</span>
-                    <h2 id="mode">-</h2>
+                    <div class="stat-label">Moda</div>
+                    <div class="stat-value" id="mode">-</div>
                 </div>
 
                 <div class="stat">
-                    <span>Desv. estándar</span>
-                    <h2 id="std">-</h2>
+                    <div class="stat-label">Desv. estándar</div>
+                    <div class="stat-value" id="std">-</div>
                 </div>
 
             </div>
 
             <div class="note">
-                ✨ Los gráficos se descargan en alta resolución para insertarlos directamente en Word, PowerPoint, tesis o artículos científicos.
+                ✨ Los gráficos se exportan en alta calidad para insertarlos directamente en Word, PowerPoint, tesis o artículos científicos.
             </div>
 
         </div>
 
-        <!-- RIGHT -->
+        <!-- RIGHT PANEL -->
 
         <div class="card">
 
             <div class="chart-header">
 
-                <div>
+                <div class="chart-title">
+                    Statistical Visualization
+                </div>
 
-                    <div class="chart-title">
-                        Statistical Visualization
-                    </div>
-
-                    <div class="chart-sub">
-                        Academic style inspired by ggplot2
-                    </div>
-
+                <div class="chart-sub">
+                    Diseño inspirado en ggplot2 y journals científicos
                 </div>
 
             </div>
 
-            <canvas id="myChart"></canvas>
+            <div class="chart-container">
+
+                <canvas id="myChart"></canvas>
+
+            </div>
 
         </div>
 
@@ -506,40 +540,47 @@ function calculateStats(){
     const input = document.getElementById("dataInput").value;
 
     const data = input
-    .split(",")
-    .map(n => parseFloat(n.trim()))
-    .filter(n => !isNaN(n));
+        .split(",")
+        .map(n => parseFloat(n.trim()))
+        .filter(n => !isNaN(n));
 
     if(data.length === 0){
+
         alert("Ingresa datos válidos.");
+
         return;
     }
 
-    // =========================
-    // STATS
-    // =========================
+    // =============================
+    // ESTADÍSTICAS
+    // =============================
 
-    const mean = data.reduce((a,b)=>a+b,0)/data.length;
+    const mean =
+        data.reduce((a,b)=>a+b,0)/data.length;
 
-    const sorted = [...data].sort((a,b)=>a-b);
+    const sorted =
+        [...data].sort((a,b)=>a-b);
 
     let median;
 
     if(sorted.length % 2 === 0){
 
-        median = (
+        median =
+        (
             sorted[sorted.length/2 -1] +
             sorted[sorted.length/2]
         ) / 2;
 
     }else{
 
-        median = sorted[Math.floor(sorted.length/2)];
+        median =
+        sorted[Math.floor(sorted.length/2)];
     }
 
     const freq = {};
 
     data.forEach(num=>{
+
         freq[num] = (freq[num] || 0) +1;
     });
 
@@ -547,33 +588,43 @@ function calculateStats(){
         freq[a] > freq[b] ? a : b
     );
 
-    const variance = data.reduce((sum,num)=>
+    const variance =
+        data.reduce((sum,num)=>
         sum + Math.pow(num - mean,2),0)/data.length;
 
     const std = Math.sqrt(variance);
 
-    // =========================
-    // UPDATE UI
-    // =========================
+    // =============================
+    // UI
+    // =============================
 
-    document.getElementById("mean").innerText = mean.toFixed(2);
-    document.getElementById("median").innerText = median;
-    document.getElementById("mode").innerText = mode;
-    document.getElementById("std").innerText = std.toFixed(2);
+    document.getElementById("mean").innerText =
+        mean.toFixed(2);
 
-    // =========================
+    document.getElementById("median").innerText =
+        median;
+
+    document.getElementById("mode").innerText =
+        mode;
+
+    document.getElementById("std").innerText =
+        std.toFixed(2);
+
+    // =============================
     // DESTROY OLD CHART
-    // =========================
+    // =============================
 
     if(chart){
+
         chart.destroy();
     }
 
-    // =========================
+    // =============================
     // CHART
-    // =========================
+    // =============================
 
-    const ctx = document.getElementById("myChart");
+    const ctx =
+        document.getElementById("myChart");
 
     chart = new Chart(ctx, {
 
@@ -581,7 +632,7 @@ function calculateStats(){
 
         data:{
 
-            labels:data.map((_,i)=>`Obs ${i+1}`),
+            labels:data.map((_,i)=>`${i+1}`),
 
             datasets:[{
 
@@ -589,15 +640,15 @@ function calculateStats(){
 
                 data:data,
 
-                backgroundColor:'rgba(59,130,246,0.75)',
+                backgroundColor:'rgba(37,99,235,0.88)',
 
-                borderColor:'rgba(59,130,246,1)',
+                borderWidth:0,
 
-                borderWidth:1,
+                borderRadius:4,
 
-                borderRadius:5,
+                barPercentage:0.8,
 
-                hoverBackgroundColor:'rgba(37,99,235,0.9)'
+                categoryPercentage:0.88
 
             }]
         },
@@ -609,18 +660,41 @@ function calculateStats(){
             maintainAspectRatio:false,
 
             animation:{
-                duration:1200
+                duration:1500
+            },
+
+            layout:{
+
+                padding:{
+                    top:20,
+                    right:20,
+                    left:10,
+                    bottom:10
+                }
             },
 
             plugins:{
 
                 legend:{
 
+                    position:'top',
+
+                    align:'start',
+
                     labels:{
+
+                        usePointStyle:true,
+
+                        pointStyle:'rectRounded',
+
+                        padding:25,
+
                         color:'#374151',
+
                         font:{
-                            size:14,
-                            family:'Inter'
+                            family:'Inter',
+                            size:13,
+                            weight:'500'
                         }
                     }
                 },
@@ -629,19 +703,20 @@ function calculateStats(){
 
                     display:true,
 
-                    text:'Distribución de datos',
+                    text:'Distribución estadística de observaciones',
+
+                    align:'start',
 
                     color:'#111827',
 
                     font:{
-                        size:22,
-                        weight:'700',
-                        family:'Inter'
+                        family:'Inter',
+                        size:28,
+                        weight:'700'
                     },
 
                     padding:{
-                        top:10,
-                        bottom:30
+                        bottom:35
                     }
                 }
 
@@ -655,9 +730,16 @@ function calculateStats(){
                         display:false
                     },
 
+                    border:{
+                        display:false
+                    },
+
                     ticks:{
+
                         color:'#6b7280',
+
                         font:{
+                            family:'Inter',
                             size:12
                         }
                     }
@@ -667,17 +749,25 @@ function calculateStats(){
 
                     beginAtZero:true,
 
-                    grid:{
-                        color:'rgba(107,114,128,0.12)'
+                    border:{
+                        display:false
                     },
 
-                    border:{
-                        dash:[4,4]
+                    grid:{
+
+                        color:'rgba(107,114,128,0.12)',
+
+                        lineWidth:1.1
                     },
 
                     ticks:{
+
+                        padding:12,
+
                         color:'#6b7280',
+
                         font:{
+                            family:'Inter',
                             size:12
                         }
                     }
@@ -693,13 +783,17 @@ function calculateStats(){
 
 function downloadChart(){
 
-    const canvas = document.getElementById("myChart");
+    const canvas =
+        document.getElementById("myChart");
 
-    const link = document.createElement('a');
+    const link =
+        document.createElement('a');
 
-    link.download = 'scientific_chart.png';
+    link.download =
+        'scientific_chart.png';
 
-    link.href = canvas.toDataURL('image/png',1.0);
+    link.href =
+        canvas.toDataURL('image/png',1.0);
 
     link.click();
 }
